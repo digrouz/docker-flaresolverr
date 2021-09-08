@@ -1,0 +1,66 @@
+FROM alpine:3.14
+LABEL maintainer "DI GREGORIO Nicolas <nicolas.digregorio@gmail.com>"
+
+ARG FLARESOLVERR_VERISON='1.2.9'
+
+### Environment variables
+ENV LANG='en_US.UTF-8' \
+    LANGUAGE='en_US.UTF-8' \
+    TERM='xterm' \
+    APPUSER='flaresolverr' \
+    APPUID='10008' \
+    APPGID='10008' \
+    PUPPETEER_PRODUCT=chrome \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
+    FLARESOLVERR_VERISON="${FLARESOLVERR_VERISON}"
+    
+### Copy config files
+COPY root/ /
+
+### Install Application
+RUN set -x && \
+    chmod 1777 /tmp && \
+    . /usr/local/bin/docker-entrypoint-functions.sh && \
+    MYUSER="${APPUSER}" && \
+    MYUID="${APPUID}" && \
+    MYGID="${APPGID}" && \
+    ConfigureUser && \
+    apk upgrade --no-cache && \
+    apk add --no-cache --virtual=buid-deps \
+      ca-certificates \
+      curl \
+    && \
+    apk add --no-cache --virtual=run-deps \
+      bash \
+      ca-certificates \
+      chromium \
+      npm \
+      su-exec \
+    && \
+    find /usr/lib/chromium/locales -type f ! -name 'en-US.*' -delete && \
+    curl -SsL https://github.com/FlareSolverr/FlareSolverr/archive/refs/tags/v${FLARESOLVERR_VERISON}.tar.gz -o /tmp/flaresolverr.tar.gz && \
+    tar xzf /tmp/flaresolverr.tar.gz -C /tmp && \
+    mv /tmp/flaresolverr-${FLARESOLVERR_VERISON} /opt/flaresolverr && \
+    apk del --no-cache --purge \
+      build-deps  \
+    && \
+    mkdir /docker-entrypoint.d && \
+    chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    ln -snf /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh && \
+    rm -rf /tmp/* \
+           /var/cache/apk/*  \
+           /var/tmp/*
+
+### Volume
+Volume ["/config"]
+
+### Expose ports
+Expose 8191
+
+### Running User: not used, managed by docker-entrypoint.sh
+#USER flaresolverr
+
+### Start flaresolverr
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["flaresolverr"]
