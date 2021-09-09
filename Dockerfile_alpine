@@ -8,8 +8,8 @@ ENV LANG='en_US.UTF-8' \
     LANGUAGE='en_US.UTF-8' \
     TERM='xterm' \
     APPUSER='flaresolverr' \
-    APPUID='10008' \
-    APPGID='10008' \
+    APPUID='10034' \
+    APPGID='10034' \
     PUPPETEER_PRODUCT=chrome \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
@@ -27,7 +27,7 @@ RUN set -x && \
     MYGID="${APPGID}" && \
     ConfigureUser && \
     apk upgrade --no-cache && \
-    apk add --no-cache --virtual=buid-deps \
+    apk add --no-cache --virtual=build-deps \
       ca-certificates \
       curl \
     && \
@@ -41,19 +41,25 @@ RUN set -x && \
     find /usr/lib/chromium/locales -type f ! -name 'en-US.*' -delete && \
     curl -SsL https://github.com/FlareSolverr/FlareSolverr/archive/refs/tags/v${FLARESOLVERR_VERISON}.tar.gz -o /tmp/flaresolverr.tar.gz && \
     tar xzf /tmp/flaresolverr.tar.gz -C /tmp && \
-    mv /tmp/flaresolverr-${FLARESOLVERR_VERISON} /opt/flaresolverr && \
+    mv /tmp/FlareSolverr-${FLARESOLVERR_VERISON} /opt/flaresolverr && \
+    cd /opt/flaresolverr && \
+    npm install && \
+    npm run build && \
+    npm prune --production && \
+    chown -R ${MYUSER}:${MYUSER} /opt/flaresolverr && \
     apk del --no-cache --purge \
       build-deps  \
     && \
     mkdir /docker-entrypoint.d && \
     chmod +x /usr/local/bin/docker-entrypoint.sh && \
     ln -snf /usr/local/bin/docker-entrypoint.sh /docker-entrypoint.sh && \
-    rm -rf /tmp/* \
+    rm -rf /root/.npm \
+           /tmp/* \
            /var/cache/apk/*  \
            /var/tmp/*
 
 ### Volume
-Volume ["/config"]
+#Volume ["/config"]
 
 ### Expose ports
 Expose 8191

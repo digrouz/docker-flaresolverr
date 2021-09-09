@@ -14,7 +14,8 @@ if [ "$1" = 'flaresolverr' ]; then
   RunDropletEntrypoint
   
   DockLog "Starting app: ${@}"
-  exec su-exec "${MYUSER}" mono /opt/Jackett/JackettConsole.exe
+  cd /opt/flaresolverr
+  exec su-exec "${MYUSER}" npm start
 else
   DockLog "Starting command: ${@}"
   exec "$@"
