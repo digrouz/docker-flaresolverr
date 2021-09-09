@@ -46,7 +46,8 @@ RUN set -x && \
     npm install && \
     npm run build && \
     npm prune --production && \
-    chown -R ${MYUSER}:${MYUSER} /opt/flaresolverr && \
+    chown -R ${MYUSER}:${MYUSER} /opt/flaresolverr /home/${MYUSER} && \
+    chmod 755 /home/${MYUSER} && \
     apk del --no-cache --purge \
       build-deps  \
     && \
