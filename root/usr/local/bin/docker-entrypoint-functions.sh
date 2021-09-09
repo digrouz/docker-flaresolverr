@@ -40,10 +40,10 @@ AutoUpgrade(){
         apt-get -y autoremove
         rm -rf /var/lib/apt/lists/*
       elif [ "${OS}" == "rhel" ]; then
-        if command -v dnf &> /dev/null; then
+        if [ -x "$(command -v dnf)" ]; then
           dnf upgrade -y
           dnf clean all
-        elif command -v yum &> /dev/null; then
+        elif [ -x "$(command -v yum)" ]; then
           yum upgrade -y
           yum clean all
         fi
