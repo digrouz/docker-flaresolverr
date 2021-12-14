@@ -36,7 +36,6 @@ RUN set -x && \
       npm \
       su-exec \
     && \
-    find /usr/lib/chromium/locales -type f ! -name 'en-US.*' -delete && \
     curl -SsL https://github.com/FlareSolverr/FlareSolverr/archive/refs/tags/v${FLARESOLVERR_VERISON}.tar.gz -o /tmp/flaresolverr.tar.gz && \
     tar xzf /tmp/flaresolverr.tar.gz -C /tmp && \
     mv /tmp/FlareSolverr-${FLARESOLVERR_VERISON} /opt/flaresolverr && \
