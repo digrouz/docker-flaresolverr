@@ -10,9 +10,9 @@ ENV LANG='en_US.UTF-8' \
     APPUSER='flaresolverr' \
     APPUID='10034' \
     APPGID='10034' \
-    PUPPETEER_PRODUCT='firefox' \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD='true' \
-    PUPPETEER_EXECUTABLE_PATH='/usr/bin/firefox' \
+    PUPPETEER_PRODUCT=firefox \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/firefox \
     FLARESOLVERR_VERISON="${FLARESOLVERR_VERISON}"
     
 ### Copy config files
