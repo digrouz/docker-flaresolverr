@@ -43,7 +43,6 @@ RUN set -x && \
     mv /tmp/FlareSolverr-${FLARESOLVERR_VERISON} /opt/flaresolverr && \
     cd /opt/flaresolverr && \
     npm install && \
-    node node_modules/puppeteer/install.js && \
     npm run build && \
     npm prune --production && \
     chown -R ${MYUSER}:${MYUSER} /opt/flaresolverr /home/${MYUSER} && \
