@@ -10,9 +10,7 @@ ENV LANG='en_US.UTF-8' \
     APPUSER='flaresolverr' \
     APPUID='10034' \
     APPGID='10034' \
-    PUPPETEER_PRODUCT=chrome \
-    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
-    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
+    PUPPETEER_PRODUCT=firefox \
     FLARESOLVERR_VERISON="${FLARESOLVERR_VERISON}"
     
 ### Copy config files
@@ -34,7 +32,7 @@ RUN set -x && \
     apk add --no-cache --virtual=run-deps \
       bash \
       ca-certificates \
-      chromium \
+      firefox \
       npm \
       su-exec \
     && \
