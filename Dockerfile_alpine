@@ -10,7 +10,7 @@ ENV LANG='en_US.UTF-8' \
     APPUSER='flaresolverr' \
     APPUID='10034' \
     APPGID='10034' \
-    PUPPETEER_PRODUCT=firefox \
+    PUPPETEER_PRODUCT='firefox' \
     FLARESOLVERR_VERISON="${FLARESOLVERR_VERISON}"
     
 ### Copy config files
@@ -32,7 +32,6 @@ RUN set -x && \
     apk add --no-cache --virtual=run-deps \
       bash \
       ca-certificates \
-      firefox \
       npm \
       su-exec \
     && \
@@ -41,6 +40,7 @@ RUN set -x && \
     mv /tmp/FlareSolverr-${FLARESOLVERR_VERISON} /opt/flaresolverr && \
     cd /opt/flaresolverr && \
     npm install && \
+    node node_modules/puppeteer/install.js && \
     npm run build && \
     npm prune --production && \
     chown -R ${MYUSER}:${MYUSER} /opt/flaresolverr /home/${MYUSER} && \
