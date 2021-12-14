@@ -11,6 +11,8 @@ ENV LANG='en_US.UTF-8' \
     APPUID='10034' \
     APPGID='10034' \
     PUPPETEER_PRODUCT='firefox' \
+    PUPPETEER_SKIP_CHROMIUM_DOWNLOAD='true' \
+    PUPPETEER_EXECUTABLE_PATH='/usr/bin/firefox' \
     FLARESOLVERR_VERISON="${FLARESOLVERR_VERISON}"
     
 ### Copy config files
@@ -32,6 +34,7 @@ RUN set -x && \
     apk add --no-cache --virtual=run-deps \
       bash \
       ca-certificates \
+      firefox \
       npm \
       su-exec \
     && \
